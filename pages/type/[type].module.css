@@ -1,0 +1,34 @@
+.logo {
+  text-align: center;
+  margin: 0 0;
+  position:absolute;
+}
+
+.background {
+  height: 95%;
+  width: 95%;
+  margin: 0% 0%;
+  padding: 0% 0%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.grid {
+  height: 100%;
+  width: 80vw;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, minmax(32%, auto));
+  gap: 1.5%;
+  padding: 1%;
+}
