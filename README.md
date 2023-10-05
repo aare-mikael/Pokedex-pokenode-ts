@@ -1,6 +1,6 @@
 ## About
 
-A project for my personal improvement in React, Typescript, Next.js and Axios.
+A project for my personal improvement in React, Typescript, Next.js, Axios, HTML and CSS.
 
 ## Getting started:
 
