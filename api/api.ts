@@ -1,8 +1,3 @@
-// import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { MainClient } from 'pokenode-ts';
 
-// const cache = new InMemoryCache();
-
-// export const client = new ApolloClient({
-//   uri: 'https://graphql-pokeapi.vercel.app/api/graphql',
-//   cache,
-// });
+export const api = new MainClient();
