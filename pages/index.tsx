@@ -1,10 +1,9 @@
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
 import styles from './index.module.css';
+import Image from 'next/image';
 import PokemonLogo from '../public/PokemonLogo.png';
 import { fetchTypes } from '../api/fetchTypes';
-import DropDown from '../components/DropDown';
-import { useRouter } from 'next/navigation';
-import { NamedObject } from '../interfaces/pokemonData';
+import TypeTile from '@/components/TypeTile';
 
 function Logo() {
   return (
@@ -30,7 +29,7 @@ export function GridH2({ link, head, desc }: GridH2Props) {
   return (
     <a
       href={link}
-      className={styles.card}
+      className={styles.footer}
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -42,63 +41,86 @@ export function GridH2({ link, head, desc }: GridH2Props) {
   );
 }
 
-interface ValueObject {
-  value: string;
-  label: string;
-}
+function Home() {
+  const [types, setTypes] = useState([]);
+  const [sortMethod, setSortMethod] = useState('id');
 
-interface HomeProps {
-  types: NamedObject[];
-}
+  const sortedTypes = [...types].sort((a, b) => {
+    switch (sortMethod) {
+      case 'name':
+        return a.name.localeCompare(b.name);
+      case 'name-reverse':
+        return b.name.localeCompare(a.name);
+      case 'id-reverse':
+        return types.indexOf(b) - types.indexOf(a);
+      default:
+        return types.indexOf(a) - types.indexOf(b);
+    }
+  });
 
-function Home({ types }: HomeProps) {
-  const dropdownOptions: ValueObject[] = types.map((type) => ({
-    value: type.id.toString(),
-    label: type.name,
-  }));
-
-  const router = useRouter();
-
-  const handleTypeChange = (selectedOption: ValueObject) => {
-    const path = `/type/${selectedOption.label}`;
-    router.push(path);
-  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedTypes = await fetchTypes();
+        const options = fetchedTypes.map((type) => ({
+          url: type.url,
+          name: type.name,
+        }));
+        setTypes(options);
+      } catch (error) {
+        console.error('Error fetching types', error);
+        throw error;
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
-    <div className="background">
+    <div className={styles.background}>
       <main className={styles.main}>
-        <div className={styles.description}>
-          <div className={styles.dropdown}>
-            <DropDown options={dropdownOptions} onChange={handleTypeChange} />
-          </div>
-        </div>
-
         <Logo />
 
-        <div className={styles.grid}>
-          <GridH2
-            link="https://github.com/mazipan/graphql-pokeapi"
-            head="PokeAPI"
-            desc="Learn more about the API"
-          />
-          <GridH2
-            link="https://graphql-pokeapi.vercel.app/api/graphql"
-            head="Playground"
-            desc="Explore the endpoint"
-          />
+        <div className={styles.button}>
+          <button onClick={() => setSortMethod('name')}>
+            Sort by Name A-Z
+          </button>
+          <button onClick={() => setSortMethod('name-reverse')}>
+            Sort by Name Z-A
+          </button>
+          <button onClick={() => setSortMethod('id')}>Sort by ID 0-20</button>
+          <button onClick={() => setSortMethod('id-reverse')}>
+            Sort by ID 20-0
+          </button>
         </div>
+
+        <div className={styles.grid}>
+          {sortedTypes.map((x, i) => {
+            return <TypeTile key={i} name={x.name} />;
+          })}
+        </div>
+
+        <footer className={styles.footer}>
+          <div className={styles.footergrid}>
+            <GridH2
+              link="https://www.linkedin.com/in/mikaelaare/"
+              head="LinkedIn"
+              desc="Find me on LinkedIn"
+            />
+            <GridH2
+              link="https://github.com/aare-mikael/Pokedex-pokenode-ts"
+              head="Github repository"
+              desc="Explore the github repository for this project"
+            />
+            <GridH2
+              link="https://pokenode-ts.vercel.app/"
+              head="Wrapper"
+              desc="The wrapper used for this project"
+            />
+          </div>
+        </footer>
       </main>
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const types = await fetchTypes();
-  return {
-    props: {
-      types,
-    },
-  };
 }
 
 export default Home;
