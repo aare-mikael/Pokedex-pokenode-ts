@@ -10,7 +10,18 @@ export interface Abilities {
 }
 
 export interface Ability {
+  id: number;
   name: string;
+  is_main_series: boolean;
+  effect: Effect;
+}
+
+export interface Effect {
+  effect: string;
+}
+
+export interface otherPokemon {
+  pokemonNames: string[];
 }
 
 export interface Sprites {
@@ -31,19 +42,25 @@ export interface Type {
   name: string;
 }
 
+export interface TypeData {
+  id: number;
+  name: string;
+  damage_relations: NamedObject[];
+}
+
 export interface Types {
   slot: number;
   type: Type;
 }
 
 export interface PokemonData {
-  abilities: Abilities[];
-  base_experience: number;
-  height: number;
   id: number;
   name: string;
+  base_experience: number;
+  height: number;
+  weight: number;
+  abilities: Abilities[];
   sprites: Sprites;
   stats: Stats[];
   types: Types[];
-  weight: number;
 }
