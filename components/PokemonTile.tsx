@@ -1,6 +1,9 @@
-import { useState } from 'react';
-import { PokemonData } from '../interfaces/pokemonData';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { fetchPokemonByName } from '../api/fetchPokemonByName';
+import { Pokemon } from 'pokenode-ts';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface PokemonTileProps {
   name: string;
@@ -11,10 +14,29 @@ const capitalize = (s: string) => {
 };
 
 const PokemonTile = ({ name }: PokemonTileProps) => {
-  const [pokemon, setPokemon] = useState<PokemonData | null>(null);
-  fetchPokemonByName(name).then((data) => setPokemon(data));
+  const [pokemon, setPokemon] = useState<Pokemon>();
+  const router = useRouter();
 
-  if (!pokemon) return <div className="tile"></div>;
+  // TODO; First present a small tile with basic info,
+  // then on click, present a larger tile with more info
+  // const handleTileClick = () => {
+  //   const path = `/pokemon/${name}`;
+  //   router.push(path);
+  // };
+
+  useEffect(() => {
+    async function fetchData(name: string) {
+      console.log('Fetching Pokemon', name);
+      try {
+        const fetchedPokemon = await fetchPokemonByName(name);
+        setPokemon(fetchedPokemon);
+      } catch (error) {
+        console.error('Error fetching Pokemon', error);
+        throw error;
+      }
+    }
+    fetchData(name);
+  }, [name]);
 
   const abilities = pokemon.abilities.map((x, i) => {
     return (
@@ -44,14 +66,14 @@ const PokemonTile = ({ name }: PokemonTileProps) => {
   });
 
   return (
-    <div className="pokemon-tile">
+    <div className={'pokemon-tile'}>
       <div className="pokemon-tile-content">
         <div className="pokemon-tile-name">
           <h1>{capitalize(pokemon.name)}</h1>
         </div>
         <div className="pokemon-tile-container">
           <div className="pokemon-tile-image">
-            <img src={pokemon.sprites.front_default} />
+            <Image src={pokemon.sprites.front_default} alt="pokemon" />
           </div>
           <div className="pokemon-tile-information">
             <span>Abilities: {abilities}</span>
