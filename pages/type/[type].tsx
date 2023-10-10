@@ -1,106 +1,97 @@
 import styles from './[type].module.css';
-import { fetchPokemon } from '@/api/fetchPokemon';
+import { fetchPokemonNames } from '@/api/fetchPokemonNames';
 import PokemonTile from '@/components/PokemonTile';
-import { PokemonData } from '@/interfaces/pokemonData';
-import { fetchTypes } from '@/api/fetchTypes';
-import DropDown from '../../components/DropDown';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { fetchPokemonByName } from '@/api/fetchPokemonByName';
+import { Pokemon } from 'pokenode-ts';
 
-interface TypePageProps {
-  pokemon: PokemonData[];
-  dropdownOptions: ValueObject[];
-}
-
-interface ValueObject {
-  value: string;
-  label: string;
-}
-
-const TypePage = ({ pokemon, dropdownOptions }: TypePageProps) => {
+const TypePage = () => {
+  const [pokemon, setPokemon] = useState([]);
+  const [sortMethod, setSortMethod] = useState('id');
   const router = useRouter();
+  const { type: chosenType } = router.query;
 
-  if (!pokemon) return <></>;
+  const sortedPokemon = [...pokemon].sort((a, b) => {
+    switch (sortMethod) {
+      case 'name':
+        return a.name.localeCompare(b.name);
+      case 'name-reverse':
+        return b.name.localeCompare(a.name);
+      case 'id-reverse':
+        return pokemon.indexOf(b) - pokemon.indexOf(a);
+      default:
+        return pokemon.indexOf(a) - pokemon.indexOf(b);
+    }
+  });
 
-  const handleTypeChange = (selectedOption: ValueObject) => {
-    const path = `/type/${selectedOption.label}`;
-    router.push(path);
-  };
+  useEffect(() => {
+    async function fetchData() {
+      if (!chosenType) return;
+
+      try {
+        const fetchedPokemonNames = await fetchPokemonNames();
+        console.log('Fetched names! ', fetchedPokemonNames);
+        let allPokemonArray: Pokemon[] = [];
+        for (let i = 0; i < fetchedPokemonNames.length; i++) {
+          console.log('Fetching Pokemon number', i);
+          const pokemon: Pokemon = await fetchPokemonByName(
+            fetchedPokemonNames[i].name
+          );
+          allPokemonArray.push(pokemon);
+        }
+        console.log('Pushed to allPokemonArray');
+        const filteredPokemon = allPokemonArray.filter((x) => {
+          x.types.some((y) => y.type.name === chosenType);
+        });
+        console.log('Filtered allPokemonArray');
+        setPokemon(filteredPokemon);
+      } catch (error) {
+        console.error('Error fetching Pokemon', error);
+        throw error;
+      }
+    }
+    fetchData();
+  }, [chosenType]);
 
   return (
     <div className={styles.background}>
-      <div className={styles.header}>
-        <div className="home-button">
-          <Link href="/">
-            <Image src="/Pokeball.svg" alt="Pokeball" width={75} height={75} />
-          </Link>
+      <div className={styles.main}>
+        <div className={styles.header}>
+          <div className={styles.homebutton}>
+            <Link href="/">
+              <Image
+                src="/Pokeball.svg"
+                alt="Pokeball"
+                width={75}
+                height={75}
+              />
+            </Link>
+          </div>
+          <br />
+          <div className={styles.button}>
+            <button onClick={() => setSortMethod('name')}>
+              Sort by Name A-Z
+            </button>
+            <button onClick={() => setSortMethod('name-reverse')}>
+              Sort by Name Z-A
+            </button>
+            <button onClick={() => setSortMethod('id')}>Sort by ID 0-20</button>
+            <button onClick={() => setSortMethod('id-reverse')}>
+              Sort by ID 20-0
+            </button>
+          </div>
         </div>
-        <DropDown options={dropdownOptions} onChange={handleTypeChange} />
-        <br />
-      </div>
-      <div className={styles.grid}>
-        {pokemon.map((x, i) => {
-          return <PokemonTile key={i} name={x.name} />;
-        })}
+        <div className={styles.grid}>
+          {pokemon.map((x, i) => {
+            return <PokemonTile key={i} name={x.name} />;
+          })}
+        </div>
       </div>
     </div>
   );
 };
-
-const getPokemon = async () => {
-  let pokemonArray: PokemonData[] = await fetchPokemon(100);
-  return pokemonArray;
-};
-
-// function filterByTypeID(pokemonArray: PokemonData[], typeID: number) {
-//   return pokemonArray.filter((x) => x.types.some((y) => y.type.id === typeID));
-// }
-
-function filterByType(pokemonArray: PokemonData[], typeName: string) {
-  return pokemonArray.filter((x) =>
-    x.types.some((y) => y.type.name === typeName)
-  );
-}
-
-//@ts-ignore
-export async function getServerSideProps({ query }) {
-  const type = query.type;
-  // const typeID = Number(query.id);
-  const types = await fetchTypes();
-
-  // let invalidType = false;
-  // if (typeID)
-  //   invalidType = !types.some((allowedType) => allowedType.id === typeID);
-  // else
-  const invalidType = !types.some((allowedType) => allowedType.name === type);
-
-  const dropdownOptions: ValueObject[] = types.map((type) => ({
-    value: type.id.toString(),
-    label: type.name,
-  }));
-
-  if (invalidType)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/404',
-      },
-      props: {},
-    };
-
-  // let filteredPokemon: PokemonData[] = [];
-  const pokemon = await getPokemon();
-  // if (typeID) filteredPokemon = filterByTypeID(pokemon, typeID);
-  // else
-  const filteredPokemon = filterByType(pokemon, type);
-
-  return {
-    props: {
-      pokemon: filteredPokemon,
-      dropdownOptions,
-    },
-  };
-}
 
 export default TypePage;
