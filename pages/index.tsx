@@ -62,11 +62,11 @@ function Home() {
     async function fetchData() {
       try {
         const fetchedTypes = await fetchTypes();
-        const options = fetchedTypes.map((type) => ({
+        const mappedTypes = fetchedTypes.map((type) => ({
           url: type.url,
           name: type.name,
         }));
-        setTypes(options);
+        setTypes(mappedTypes);
       } catch (error) {
         console.error('Error fetching types', error);
         throw error;
@@ -78,21 +78,21 @@ function Home() {
   return (
     <div className={styles.background}>
       <main className={styles.main}>
-        <Logo />
-
-        <div className={styles.button}>
-          <button onClick={() => setSortMethod('name')}>
-            Sort by Name A-Z
-          </button>
-          <button onClick={() => setSortMethod('name-reverse')}>
-            Sort by Name Z-A
-          </button>
-          <button onClick={() => setSortMethod('id')}>Sort by ID 0-20</button>
-          <button onClick={() => setSortMethod('id-reverse')}>
-            Sort by ID 20-0
-          </button>
+        <div className={styles.header}>
+          <div className={styles.button}>
+            <button onClick={() => setSortMethod('name')}>
+              Sort by Name A-Z
+            </button>
+            <button onClick={() => setSortMethod('name-reverse')}>
+              Sort by Name Z-A
+            </button>
+            <button onClick={() => setSortMethod('id')}>Sort by ID 0-20</button>
+            <button onClick={() => setSortMethod('id-reverse')}>
+              Sort by ID 20-0
+            </button>
+          </div>
         </div>
-
+        <Logo />
         <div className={styles.grid}>
           {sortedTypes.map((x, i) => {
             return <TypeTile key={i} name={x.name} />;
