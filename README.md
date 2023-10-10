@@ -4,7 +4,8 @@ A project for my personal improvement in React, Typescript, Next.js, Axios, HTML
 
 ## Getting started:
 
-Clone the repository, install npm packages, and write "npm run dev" in your preferred terminal.
+Clone the repository, install npm packages, and write "npm run dev" in your preferred terminal. 
+localhost:3000/ is now the default start page for the project.
 
 ## Description:
 
