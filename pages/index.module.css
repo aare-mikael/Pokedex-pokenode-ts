@@ -24,8 +24,9 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
-  gap: 0px;
+  grid-template-columns: repeat(auto-fit, 400px);
+  grid-gap: 20px;
+  /* grid-template-columns: repeat(4, minmax(25%, auto)); */
 }
 
 .card {
