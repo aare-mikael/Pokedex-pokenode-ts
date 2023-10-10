@@ -1,24 +1,10 @@
-// import { NamedObject } from '@/interfaces/pokemonData';
-// import { client } from './api';
-// import { gql } from '@apollo/client';
+import { api } from './api';
 
-// const TYPES = gql`
-//   query {
-//     types {
-//       results {
-//         id
-//         name
-//       }
-//     }
-//   }
-// `;
-
-// export async function fetchTypes(): Promise<NamedObject[]> {
-//   try {
-//     const { data } = await client.query({ query: TYPES });
-//     return data.types.results;
-//   } catch (error) {
-//     console.error('Error fetching types', error);
-//     throw error;
-//   }
-// }
+export async function fetchTypes() {
+  try {
+    return (await api.pokemon.listTypes()).results;
+  } catch (error) {
+    console.error('Error fetching types', error);
+    throw error;
+  }
+}
