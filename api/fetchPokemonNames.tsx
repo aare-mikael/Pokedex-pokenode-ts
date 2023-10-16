@@ -1,6 +1,6 @@
 import { api } from './api';
 
-export async function fetchPokemonNames() {
+async function fetchPokemonNames() {
   try {
     const count = (await api.pokemon.listPokemons()).count;
     // First number is offset, second is limit
@@ -10,3 +10,5 @@ export async function fetchPokemonNames() {
     throw error;
   }
 }
+
+export default fetchPokemonNames;
