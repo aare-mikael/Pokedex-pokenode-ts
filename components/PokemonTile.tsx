@@ -63,10 +63,15 @@ const PokemonTile = ({ name }: PokemonTileProps) => {
 
   const types = pokemon
     ? pokemon.types.map((x, i) => {
+        let typeName = capitalize(x.type.name);
         return (
           <span key={i}>
-            {capitalize(x.type.name)}
-            {i == pokemon.types.length - 1 ? '' : ', '}
+            <Image
+              src={`/types/${typeName}.png`}
+              alt={x.type.name}
+              width={75}
+              height={25}
+            />
           </span>
         );
       })

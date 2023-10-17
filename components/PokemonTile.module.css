@@ -25,21 +25,25 @@
   }
   
   .pokemonTileContainer {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 16px;
-    align-items: center;
+    align-items: column;
   }
   
   .pokemonTileImage {
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .pokemonTileImage img {
     transition: transform 0.5s ease, box-shadow 0.5s ease;
   }
 
-  .pokemonTileImage:hover {
-    transform: scale(1.5);
+  .pokemonTileImage img:hover {
+    transform: scale(2.5);
   }
   
   .pokemonTileInformation {
