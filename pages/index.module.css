@@ -1,6 +1,6 @@
-.description {
+/* .description {
   margin-bottom: 30px;
-}
+} */
 
 /* .dropdown {
   width: 100%;
@@ -17,19 +17,24 @@
   align-items: stretch;
 } Commented out as styling is taken care of in DropDown.tsx */
 
-.dropdown:hover {
+/* .dropdown:hover {
   outline: none;
   box-shadow: 0 0 30px #ffcb05;
-}
+} */
 
-.grid {
+/* .container {
+  margin: 0 auto;
+  width: 600px;
+  align-items: center;
+} */
+
+/* .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 400px);
-  grid-gap: 20px;
-  /* grid-template-columns: repeat(4, minmax(25%, auto)); */
-}
+  grid-template-columns: repeat(auto-fit, 24%);
+  grid-gap: 1.33%;
+} */
 
-.card {
+/* .card {
   margin: 5px;
   padding: 5px;
   background-color: #3a3a3a;
@@ -37,9 +42,9 @@
   border-radius: 10px;
   box-shadow: 0 0 5px #ffcb05;
   transition: background-color 0.4s ease;
-}
+} */
 
-.card h2 {
+/* .card h2 {
   margin-bottom: 5px;
   margin-left: 10px;
 }
@@ -53,8 +58,8 @@
 .card:hover {
   box-shadow: 0 0 20px #ffcb05;
   background-color: #4a4a4a;
-}
+} */
 
-.element {
+/* .element {
   margin: 20px 0;
-}
+} */
