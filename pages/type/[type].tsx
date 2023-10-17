@@ -1,5 +1,5 @@
 import styles from './[type].module.css';
-import { fetchPokemonNames } from '@/api/fetchPokemonNames';
+import fetchPokemonNames from '@/api/fetchPokemonNames';
 import PokemonTile from '@/components/PokemonTile';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
