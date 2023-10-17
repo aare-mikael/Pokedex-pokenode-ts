@@ -1,0 +1,47 @@
+.searchContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .searchInput {
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
+  .searchSelect {
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
+  .searchButton {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  
+  .suggestions {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    max-height: 50vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    color: white;
+    background-color: black;
+    text-align: start;
+  }
+
+  .suggestionItem {
+    background-color: #1a1a1a;
+    color: white;
+    font-size: 14px;
+    overflow: hidden;
+    padding-left: 0.5rem;
+    padding-top: 0.25rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .suggestionItem:hover {
+    background-color: #aaa;
+}
