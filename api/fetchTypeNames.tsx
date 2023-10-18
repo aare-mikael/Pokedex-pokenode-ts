@@ -1,6 +1,6 @@
 import { api } from './api';
 
-async function fetchTypes() {
+async function fetchTypeNames() {
   try {
     return (await api.pokemon.listTypes()).results;
   } catch (error) {
@@ -9,4 +9,4 @@ async function fetchTypes() {
   }
 }
 
-export default fetchTypes;
+export default fetchTypeNames;
