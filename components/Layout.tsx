@@ -20,7 +20,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     }>
   >([]);
 
-  const addResult = (item: string, filter: 'pokemon' | 'types') => {
+  const addResult = (
+    item: string,
+    filter: 'pokemon' | 'types' | 'abilities'
+  ) => {
     const newResult = { item, filter, entering: true };
     setSearchResults((prevResults) => [newResult, ...prevResults]);
 
