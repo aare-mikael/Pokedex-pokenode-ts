@@ -1,6 +1,6 @@
 .pokemonTile {
     display: flex;
-    width: 50%;
+    width: 75%;
     margin: 16px auto;
     backdrop-filter: brightness(0.33);
     color: white;
@@ -43,7 +43,7 @@
   }
 
   .pokemonTileImage img:hover {
-    transform: scale(2.5);
+    transform: scale(2);
   }
   
   .pokemonTileInformation {
