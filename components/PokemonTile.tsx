@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fetchPokemonByName } from '../api/fetchPokemonByName';
 import { Pokemon } from 'pokenode-ts';
 import Image from 'next/image';
@@ -70,7 +69,7 @@ const PokemonTile = ({ name }: PokemonTileProps) => {
               src={`/types/${typeName}.png`}
               alt={x.type.name}
               width={75}
-              height={25}
+              height={30}
             />
           </span>
         );
