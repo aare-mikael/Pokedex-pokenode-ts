@@ -15,24 +15,21 @@ const capitalize = (s: string) => {
 
 const PokemonTile = ({ name }: PokemonTileProps) => {
   const [pokemon, setPokemon] = useState<Pokemon>();
-  const router = useRouter();
-
-  // TODO; First present a small tile with basic info,
-  // then on click, present a larger tile with more info
-  // const handleTileClick = () => {
-  //   const path = `/pokemon/${name}`;
-  //   router.push(path);
-  // };
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData(name: string) {
-      console.log('Fetching Pokemon', name);
       try {
         const fetchedPokemon = await fetchPokemonByName(name);
-        setPokemon(fetchedPokemon);
+        if (!fetchedPokemon) {
+          setError('Pokemon not found!');
+        } else {
+          setPokemon(fetchedPokemon);
+          setError(null);
+        }
       } catch (error) {
         console.error('Error fetching Pokemon', error);
-        throw error;
+        setError('An error occured while fetching the Pokemon');
       }
     }
     fetchData(name);
@@ -78,7 +75,9 @@ const PokemonTile = ({ name }: PokemonTileProps) => {
 
   return (
     <div className={styles.pokemonTile}>
-      {pokemon ? (
+      {error ? (
+        <p>{error}</p>
+      ) : pokemon ? (
         <>
           {
             <div className={styles.pokemonTileContent}>

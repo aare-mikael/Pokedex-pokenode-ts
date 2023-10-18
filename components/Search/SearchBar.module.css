@@ -45,3 +45,9 @@
   .suggestionItem:hover {
     background-color: #aaa;
 }
+
+.searchError {
+    color: red;
+    font-size: 16px;
+    margin-right: 0.5rem;
+}

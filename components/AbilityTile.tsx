@@ -13,15 +13,21 @@ const capitalize = (s: string) => {
 
 const AbilityTile = ({ name }: AbilityTileProps) => {
   const [ability, setAbility] = useState<Ability>();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData(name: string) {
       try {
         const fetchedAbility = await fetchAbilityByName(name);
-        setAbility(fetchedAbility);
+        if (!fetchedAbility) {
+          setError('Ability not found!');
+        } else {
+          setAbility(fetchedAbility);
+          setError(null);
+        }
       } catch (error) {
-        console.error('Error fetching Ability', error);
-        throw error;
+        console.error('Error fetching ability', error);
+        setError('An error occured while fetching the ability');
       }
     }
     fetchData(name);
@@ -45,7 +51,9 @@ const AbilityTile = ({ name }: AbilityTileProps) => {
 
   return (
     <div className={styles.abilityTile}>
-      {ability ? (
+      {error ? (
+        <p>{error}</p>
+      ) : ability ? (
         <>
           {
             <div className={styles.abilityTileContent}>

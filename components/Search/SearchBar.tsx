@@ -15,6 +15,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   );
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [data, setData] = useState<string[]>([]);
+  const [searchError, setSearchError] = useState<string | null>(null);
 
   useEffect(() => {
     let fetchData;
@@ -65,8 +66,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     }
   };
 
+  const handleSearch = () => {
+    if (!data.includes(query.toLowerCase())) {
+      setSearchError(
+        `No results found for "${query}", please make sure your word is included in the dropdown list.`
+      );
+    } else {
+      onSearch(query, filter);
+      setSearchError(null);
+    }
+  };
+
   return (
     <div className={styles.searchContainer}>
+      {searchError && <p className={styles.searchError}>{searchError}</p>}
       <input
         type="text"
         placeholder="Search..."
@@ -85,10 +98,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         <option value="types">Types</option>
         <option value="abilities">Abilities</option>
       </select>
-      <button
-        onClick={() => onSearch(query, filter)}
-        className={styles.searchButton}
-      >
+      <button onClick={handleSearch} className={styles.searchButton}>
         Search
       </button>
       {suggestions.length > 0 && (

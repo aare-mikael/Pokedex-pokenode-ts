@@ -15,16 +15,21 @@ const capitalize = (s: string) => {
 
 const TypeTile = ({ name }: TypeTileProps) => {
   const [type, setType] = useState<Type>();
-  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData(name: string) {
       try {
         const fetchedType = await fetchTypeByName(name);
-        setType(fetchedType);
+        if (!fetchedType) {
+          setError('Type not found!');
+        } else {
+          setType(fetchedType);
+          setError(null);
+        }
       } catch (error) {
         console.error('Error fetching Type', error);
-        throw error;
+        setError('An error occured while fetching the type');
       }
     }
     fetchData(name);
@@ -158,7 +163,9 @@ const TypeTile = ({ name }: TypeTileProps) => {
 
   return (
     <div className={styles.typeTile}>
-      {type ? (
+      {error ? (
+        <p>{error}</p>
+      ) : type ? (
         <>
           {
             <div className={styles.typeTileContent}>
