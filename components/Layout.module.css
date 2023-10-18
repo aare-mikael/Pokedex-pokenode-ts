@@ -33,6 +33,20 @@
     padding: 1rem;
   }
   
+  .entering {
+    animation: slideDown 1s forwards;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   .footer {
     color: white;
     padding: 1rem;
