@@ -1,0 +1,49 @@
+.abilityTile {
+    display: flex;
+    width: 75%;
+    margin: 16px auto;
+    backdrop-filter: brightness(0.33);
+    color: white;
+    flex-direction: column;
+    border: 2px solid #e0e0e0;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .abilityTileContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .abilityTileName h1 {
+    font-size: 30px;
+    margin-bottom: 16px;
+    text-decoration: underline;
+    text-transform: uppercase;
+  }
+  
+  .abilityTileContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: column;
+  }
+  
+  .abilityTileInformation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 5px;
+  }
+
+  .damageImage {
+    transform: translateY(10px);
+  }
+  
+  .abilityTileInformation span,
+  .abilityTileInformation p {
+    font-size: 14px;
+  }
+  
