@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styles from './SearchBar.module.css';
 import fetchPokemonNames from '../../api/fetchPokemonNames';
-import fetchTypes from '../../api/fetchTypes';
+import fetchTypeNames from '../../api/fetchTypeNames';
+import fetchAbilityNames from '@/api/fetchAbilityNames';
 
 interface SearchBarProps {
-  onSearch: (query: string) => void;
+  onSearch: (query: string, filter: 'pokemon' | 'types' | 'abilities') => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState('pokemon');
+  const [filter, setFilter] = useState<'pokemon' | 'types' | 'abilities'>(
+    'pokemon'
+  );
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [data, setData] = useState<string[]>([]);
 
@@ -27,10 +30,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         break;
       case 'types':
         fetchData = async () => {
-          const results = await fetchTypes();
+          const results = await fetchTypeNames();
           const types = results.map((result) => result.name);
           const sortedTypes = types.sort((a, b) => a.localeCompare(b));
           setData(sortedTypes);
+        };
+        break;
+      case 'abilities':
+        fetchData = async () => {
+          const results = await fetchAbilityNames();
+          const abilities = results.map((result) => result.name);
+          const sortedAbilities = abilities.sort((a, b) => a.localeCompare(b));
+          setData(sortedAbilities);
         };
         break;
       default:
@@ -65,16 +76,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       />
       <select
         value={filter}
-        onChange={(e) => setFilter(e.target.value)}
+        onChange={(e) =>
+          setFilter(e.target.value as 'pokemon' | 'types' | 'abilities')
+        }
         className={styles.searchSelect}
       >
         <option value="pokemon">Pokemon</option>
         <option value="types">Types</option>
-        {/* TODO; Add more filters as needed */}
-        {/* <option value="abilities">Abilities</option>
-        <option value="berries">Berries</option> */}
+        <option value="abilities">Abilities</option>
       </select>
-      <button onClick={() => onSearch(query)} className={styles.searchButton}>
+      <button
+        onClick={() => onSearch(query, filter)}
+        className={styles.searchButton}
+      >
         Search
       </button>
       {suggestions.length > 0 && (
